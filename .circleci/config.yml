@@ -62,7 +62,7 @@ jobs:
           name: Generate docs
           command: |
             npm run build
-            npm run doc
+          #  npm run doc
   deploy2development:
     docker:
       - image: circleci/node:latest
