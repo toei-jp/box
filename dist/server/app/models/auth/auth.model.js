@@ -98,3 +98,4 @@ class AuthModel {
     }
 }
 exports.AuthModel = AuthModel;
+//# sourceMappingURL=auth.model.js.map

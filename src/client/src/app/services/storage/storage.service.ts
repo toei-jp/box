@@ -15,6 +15,16 @@ export enum SaveType {
     Local = 1
 }
 
+export interface IConfig {
+    deviceId: string;
+    email: string;
+    familyName: string;
+    givenName: string;
+    printer: string;
+    theater: string;
+    cashRegister: string;
+}
+
 @Injectable()
 export class StorageService {
 

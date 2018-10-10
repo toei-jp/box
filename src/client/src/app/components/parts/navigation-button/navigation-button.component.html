@@ -1,0 +1,3 @@
+<a *ngIf="!isRoot" [routerLink]="prevLink" class="back">戻る</a>
+<a *ngIf="!isRoot" (click)="confirmRedirect('/purchase/schedule')" class="home">ホーム</a>
+<a (click)="confirmRedirect(inquiryLink, true)" class="inquiry">チケ<br>発券</a>

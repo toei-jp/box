@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const authorize_controller_1 = require("../controllers/authorize/authorize.controller");
+const setting_controller_1 = require("../controllers/setting/setting.controller");
 // import { getSchedule } from '../controllers/purchase/purchase.controller';
 const authorize_1 = require("./authorize");
 const inquiry_1 = require("./inquiry");
@@ -53,8 +54,10 @@ exports.default = (app) => {
     app.use('/method', method_1.default);
     // app.get('/purchase/performances/getSchedule', getSchedule);
     app.get('/purchase/transaction', purchaseTransaction);
+    app.get('/setting', setting_controller_1.index);
     app.get('/signIn', authorize_controller_1.signInRedirect);
     app.get('/', root);
     app.use(notfound);
     app.use(error);
 };
+//# sourceMappingURL=router.js.map

@@ -1,0 +1,9 @@
+<div class="reji-select">
+    <div class="display" [ngClass]="{ disabled: !editable }" (click)="showRejiList()">
+        {{ config.cashRegister }}
+    </div>
+    <div class="pull-down-cover" [ngClass]="{ show: covering }" (click)="hideRejiList()"></div>
+    <div class="pull-down" *ngIf="editable" [ngClass]="{ hide: hide }">
+        <div *ngFor="let reji of rejiList" [ngClass]="{ selecting: reji.selected }" (click)="selectReji($event.target.innerText)">{{ reji.name }}</div>
+    </div>
+</div>

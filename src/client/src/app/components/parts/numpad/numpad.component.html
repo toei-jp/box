@@ -1,0 +1,27 @@
+<div class="numpad-cover" (click)="keyPress(keyAction.ok)" [ngClass]="{ hide: hide }"></div>
+<table [ngClass]="{ hide: hide }">
+    <tr>
+        <td (click)="keyPress(keyAction.input, 7)">7</td>
+        <td (click)="keyPress(keyAction.input, 8)">8</td>
+        <td (click)="keyPress(keyAction.input, 9)">9</td>
+    </tr>
+    <tr>
+        <td (click)="keyPress(keyAction.input, 4)">4</td>
+        <td (click)="keyPress(keyAction.input, 5)">5</td>
+        <td (click)="keyPress(keyAction.input, 6)">6</td>
+    </tr>
+    <tr>
+        <td (click)="keyPress(keyAction.input, 1)">1</td>
+        <td (click)="keyPress(keyAction.input, 2)">2</td>
+        <td (click)="keyPress(keyAction.input, 3)">3</td>
+    </tr>
+    <tr>
+        <td (click)="keyPress(keyAction.input, 10)">0</td>
+        <td (click)="keyPress(keyAction.input, 100)">00</td>
+        <td class="dark-gray" (click)="keyPress(keyAction.input, 1000)">000</td>
+    </tr>
+    <tr>
+        <td class="gray" (click)="keyPress(keyAction.clear)">C</td>
+        <td colspan="2" class="blue" (click)="keyPress(keyAction.ok)">確認</td>
+    </tr>
+</table>

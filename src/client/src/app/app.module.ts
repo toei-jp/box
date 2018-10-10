@@ -13,34 +13,44 @@ import { InquiryConfirmComponent } from './components/inquiry/inquiry-confirm/in
 import { InquiryLoginComponent } from './components/inquiry/inquiry-login/inquiry-login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ButtonsComponent } from './components/parts/buttons/buttons.component';
+import { CashRegisterComponent } from './components/parts/cash-register/cash-register.component';
 import { FooterComponent } from './components/parts/footer/footer.component';
 import { HeaderComponent } from './components/parts/header/header.component';
 import { IconComponent } from './components/parts/icon/icon.component';
 import { LoadingComponent } from './components/parts/loading/loading.component';
 import { ModalComponent } from './components/parts/modal/modal.component';
+import { NavigationButtonComponent } from './components/parts/navigation-button/navigation-button.component';
 import { NextButtonComponent } from './components/parts/next-button/next-button.component';
+import { NumpadComponent } from './components/parts/numpad/numpad.component';
 import {
     PurchaseFilmOrderPerformanceComponent
 } from './components/parts/purchase-film-order-performance/purchase-film-order-performance.component';
 import { PurchaseFilmOrderComponent } from './components/parts/purchase-film-order/purchase-film-order.component';
 import { PurchaseNoteComponent } from './components/parts/purchase-note/purchase-note.component';
+import { PurchasePaymentComponent } from './components/parts/purchase-payment/purchase-payment.component';
 import { PurchaseStepComponent } from './components/parts/purchase-step/purchase-step.component';
 import { PurchaseTermComponent } from './components/parts/purchase-term/purchase-term.component';
 import { ScreenComponent } from './components/parts/screen/screen.component';
 import { SeatInfoComponent } from './components/parts/seat-info/seat-info.component';
 import { SiteSealComponent } from './components/parts/site-seal/site-seal.component';
 import { PurchaseBaseComponent } from './components/purchase/purchase-base/purchase-base.component';
+import { PurchaseCashPaymentComponent } from './components/purchase/purchase-cash-payment/purchase-cash-payment.component';
 import { PurchaseCompleteComponent } from './components/purchase/purchase-complete/purchase-complete.component';
-import { PurchaseConfirmComponent } from './components/purchase/purchase-confirm/purchase-confirm.component';
-import { PurchaseInputComponent } from './components/purchase/purchase-input/purchase-input.component';
+// import { PurchaseConfirmComponent } from './components/purchase/purchase-confirm/purchase-confirm.component';
+import {
+    PurchaseCreditCardPaymentComponent
+} from './components/purchase/purchase-credit-card-payment/purchase-credit-card-payment.component';
+// import { PurchaseInputComponent } from './components/purchase/purchase-input/purchase-input.component';
 import { PurchaseMvtkConfirmComponent } from './components/purchase/purchase-mvtk-confirm/purchase-mvtk-confirm.component';
 import { PurchaseMvtkInputComponent } from './components/purchase/purchase-mvtk-input/purchase-mvtk-input.component';
 import { PurchaseOverlapComponent } from './components/purchase/purchase-overlap/purchase-overlap.component';
+import { PurchasePaymentMethodComponent } from './components/purchase/purchase-payment-method/purchase-payment-method.component';
 // import { PurchasePointComponent } from './components/purchase/purchase-point/purchase-point.component';
 import { PurchaseScheduleComponent } from './components/purchase/purchase-schedule/purchase-schedule.component';
 import { PurchaseSeatComponent } from './components/purchase/purchase-seat/purchase-seat.component';
 import { PurchaseTicketComponent } from './components/purchase/purchase-ticket/purchase-ticket.component';
 import { PurchaseTransactionComponent } from './components/purchase/purchase-transaction/purchase-transaction.component';
+import { PurchaseWebMoneyPaymentComponent } from './components/purchase/purchase-web-money-payment/purchase-web-money-payment.component';
 import { TestScreenComponent } from './components/test/test-screen/test-screen.component';
 import { DurationPipe } from './pipes/duration/duration.pipe';
 import { LibphonenumberFormatPipe } from './pipes/libphonenumber-format/libphonenumber-format.pipe';
@@ -65,8 +75,8 @@ import { UtilService } from './services/util/util.service';
         PurchaseScheduleComponent,
         PurchaseSeatComponent,
         PurchaseTicketComponent,
-        PurchaseInputComponent,
-        PurchaseConfirmComponent,
+        // PurchaseInputComponent,
+        // PurchaseConfirmComponent,
         PurchaseMvtkInputComponent,
         PurchaseMvtkConfirmComponent,
         InquiryBaseComponent,
@@ -96,9 +106,17 @@ import { UtilService } from './services/util/util.service';
         ExpiredComponent,
         PurchaseTermComponent,
         PurchaseNoteComponent,
+        PurchasePaymentMethodComponent,
         // PurchasePointComponent,
         AuthSigninComponent,
-        TestScreenComponent
+        TestScreenComponent,
+        CashRegisterComponent,
+        PurchaseCashPaymentComponent,
+        PurchaseCreditCardPaymentComponent,
+        PurchaseWebMoneyPaymentComponent,
+        PurchasePaymentComponent,
+        NumpadComponent,
+        NavigationButtonComponent
     ],
     imports: [
         BrowserModule,

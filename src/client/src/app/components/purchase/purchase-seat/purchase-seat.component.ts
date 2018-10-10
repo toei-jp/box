@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup/* , Validators */ } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { CinerinoService } from '../../../services/cinerino/cinerino.service';
@@ -38,7 +38,7 @@ export class PurchaseSeatComponent implements OnInit, AfterViewInit {
         this.notSelectSeatModal = false;
         this.seats = [];
         this.seatForm = this.formBuilder.group({
-            terms: [false, [Validators.requiredTrue]]
+            // terms: [false, [Validators.requiredTrue]]
         });
         this.disable = false;
         if (this.purchase.data.screeningEvent === undefined) {
@@ -107,11 +107,6 @@ export class PurchaseSeatComponent implements OnInit, AfterViewInit {
             return;
         }
         if (this.disable) {
-            return;
-        }
-        if (this.seatForm.invalid) {
-            this.seatForm.controls.terms.markAsDirty();
-
             return;
         }
         this.disable = true;

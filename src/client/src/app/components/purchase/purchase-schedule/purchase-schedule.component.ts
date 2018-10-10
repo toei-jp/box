@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { CinerinoService } from '../../../services/cinerino/cinerino.service';
 import { ErrorService } from '../../../services/error/error.service';
 import { PurchaseService } from '../../../services/purchase/purchase.service';
+import { IConfig, SaveType, StorageService } from '../../../services/storage/storage.service';
 
 type IMovieTheater = factory.organization.movieTheater.IOrganization;
 type IScreeningEvent = factory.chevre.event.screeningEvent.IEvent;
@@ -24,20 +25,21 @@ interface IDate {
     styleUrls: ['./purchase-schedule.component.scss']
 })
 export class PurchaseScheduleComponent implements OnInit {
-    public theaters: IMovieTheater[];
+    public theater: IMovieTheater;
     public isLoading: boolean;
     public dateList: IDate[];
     public filmOrder: IFilmOrder[];
     public schedules: IScreeningEvent[];
     public conditions: { theater: string; date: string };
     public environment = environment;
+    private config: IConfig;
 
     constructor(
         private error: ErrorService,
         private purchase: PurchaseService,
-        private cinerino: CinerinoService
+        private cinerino: CinerinoService,
+        private storage: StorageService
     ) {
-        this.theaters = [];
         this.dateList = [];
         this.filmOrder = [];
         this.conditions = {
@@ -55,11 +57,15 @@ export class PurchaseScheduleComponent implements OnInit {
         window.scrollTo(0, 0);
         this.isLoading = true;
         try {
+            this.config = this.storage.load('config', SaveType.Local);
+            if (this.config === null) {
+                throw new Error('設定が保存していません。');
+            }
             await this.cinerino.getServices();
-            this.theaters = (await this.cinerino.organization.searchMovieTheaters({})).data;
-            this.dateList = this.getDateList(3);
+            this.theater = (await this.cinerino.organization.findMovieTheaterByBranchCode({branchCode: this.config.theater})).data[0];
+            this.dateList = this.getDateList(7);
             this.conditions = {
-                theater: this.theaters[0].location.branchCode,
+                theater: this.config.theater,
                 date: this.dateList[0].value
             };
             await this.changeConditions();
@@ -80,7 +86,10 @@ export class PurchaseScheduleComponent implements OnInit {
             const date = moment().add(i, 'day');
             results.push({
                 value: date.format('YYYYMMDD'),
-                label: (i === 0) ? '本日' : (i === 1) ? '明日' : (i === 2) ? '明後日' : date.format('YYYY/MM/DD')
+                label: (i === 0) ? '本日' :
+                       (i === 1) ? '明日' :
+                       (i === 2) ? '明後日' :
+                       date.format('MM/DD')
             });
         }
 
@@ -97,15 +106,9 @@ export class PurchaseScheduleComponent implements OnInit {
         this.filmOrder = [];
         try {
             await this.cinerino.getServices();
-            const theater = this.theaters.find((target) => {
-                return (target.location.branchCode === this.conditions.theater);
-            });
-            if (theater === undefined || theater.identifier === undefined) {
-                throw new Error('theater is not found');
-            }
             this.schedules = (await this.cinerino.event.searchScreeningEvents({
                 superEvent: {
-                    locationBranchCodes: [theater.location.branchCode]
+                    locationBranchCodes: [this.config.theater]
                 },
                 startFrom: moment(this.conditions.date).toDate(),
                 startThrough: moment(this.conditions.date).add(1, 'day').toDate()

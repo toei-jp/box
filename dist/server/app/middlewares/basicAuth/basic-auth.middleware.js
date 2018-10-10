@@ -28,3 +28,4 @@ exports.default = (req, res, next) => {
     res.setHeader('WWW-Authenticate', 'Basic realm="Cinerino Authentication"');
     res.status(http_status_1.UNAUTHORIZED).end('Unauthorized');
 };
+//# sourceMappingURL=basic-auth.middleware.js.map

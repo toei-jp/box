@@ -290,7 +290,7 @@ export class PurchaseTicketComponent implements OnInit {
             // });
             const tickets = this.offers.map((offer) => offer.ticketInfo);
             await this.purchase.ticketRegistrationProcess(tickets);
-            this.router.navigate(['/purchase/input']);
+            this.router.navigate(['/purchase/payment-method']);
         } catch (err) {
             this.error.redirect(err);
         }

@@ -4,9 +4,8 @@
 <%- contentFor('body') %>
 <div class="inquiry-confirm">
     <h1 class="page-ttl"><%- __('inquiry.login.pageTitle') %></h1>
-    <p class="read"><%- __('inquiry.login.read') %></p>
     <form method="post">
-        <div class="box radius bg-light-gray">
+        <div class="box radius">
             <dl>
                 <dt><%- __('common.purchaseNumber') %></dt>
                 <dd>
@@ -28,10 +27,8 @@
         <input type="hidden" name="theaterCode" value="<%= inquiryModel.movieTheater.location.branchCode %>">
         
         <div class="button-area clearfix">
-            <div class="button next-button blue-button"><button class="icon-next-white" type="submit"><%- __('inquiry.login.next') %></button></div>
-            <div class="prev-link"><a class="icon-prev-black" href="<%= inquiryModel.movieTheater.url %>"><%- __('inquiry.login.prev') %></a></div>
+            <div class="button next-button yellow-button"><button class="icon-next-white" type="submit"><%- __('inquiry.login.next') %></button></div>
         </div>
     </form>
-<%- include('../layouts/siteSeal') %>
 </div>
 <div id="copy" style="display: none"></div>

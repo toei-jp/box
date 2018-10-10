@@ -8,24 +8,30 @@ import { InquiryConfirmComponent } from './components/inquiry/inquiry-confirm/in
 import { InquiryLoginComponent } from './components/inquiry/inquiry-login/inquiry-login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PurchaseBaseComponent } from './components/purchase/purchase-base/purchase-base.component';
+import { PurchaseCashPaymentComponent } from './components/purchase/purchase-cash-payment/purchase-cash-payment.component';
 import { PurchaseCompleteComponent } from './components/purchase/purchase-complete/purchase-complete.component';
-import { PurchaseConfirmComponent } from './components/purchase/purchase-confirm/purchase-confirm.component';
-import { PurchaseInputComponent } from './components/purchase/purchase-input/purchase-input.component';
+// import { PurchaseConfirmComponent } from './components/purchase/purchase-confirm/purchase-confirm.component';
+import {
+    PurchaseCreditCardPaymentComponent
+} from './components/purchase/purchase-credit-card-payment/purchase-credit-card-payment.component';
+// import { PurchaseInputComponent } from './components/purchase/purchase-input/purchase-input.component';
 import { PurchaseMvtkConfirmComponent } from './components/purchase/purchase-mvtk-confirm/purchase-mvtk-confirm.component';
 import { PurchaseMvtkInputComponent } from './components/purchase/purchase-mvtk-input/purchase-mvtk-input.component';
 import { PurchaseOverlapComponent } from './components/purchase/purchase-overlap/purchase-overlap.component';
+import { PurchasePaymentMethodComponent } from './components/purchase/purchase-payment-method/purchase-payment-method.component';
 // import { PurchasePointComponent } from './components/purchase/purchase-point/purchase-point.component';
 import { PurchaseScheduleComponent } from './components/purchase/purchase-schedule/purchase-schedule.component';
 import { PurchaseSeatComponent } from './components/purchase/purchase-seat/purchase-seat.component';
 import { PurchaseTicketComponent } from './components/purchase/purchase-ticket/purchase-ticket.component';
 import { PurchaseTransactionComponent } from './components/purchase/purchase-transaction/purchase-transaction.component';
+import { PurchaseWebMoneyPaymentComponent } from './components/purchase/purchase-web-money-payment/purchase-web-money-payment.component';
 import { TestScreenComponent } from './components/test/test-screen/test-screen.component';
 // import { MemberGuardService } from './services/member-guard/member-guard.service';
 import { PurchaseGuardService } from './services/purchase-guard/purchase-guard.service';
 import { TestGuardService } from './services/test-guard/test-guard.service';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'purchase/transaction', pathMatch: 'full' },
+    { path: '', redirectTo: 'purchase/schedule', pathMatch: 'full' },
     { path: 'purchase/transaction', component: PurchaseTransactionComponent },
     { path: 'auth/signin', component: AuthSigninComponent },
     {
@@ -45,10 +51,14 @@ const routes: Routes = [
         children: [
             { path: 'seat', component: PurchaseSeatComponent },
             { path: 'ticket', component: PurchaseTicketComponent },
-            { path: 'input', component: PurchaseInputComponent },
-            { path: 'confirm', component: PurchaseConfirmComponent },
+            // { path: 'input', component: PurchaseInputComponent },
+            // { path: 'confirm', component: PurchaseConfirmComponent },
             { path: 'mvtk/input', component: PurchaseMvtkInputComponent },
             { path: 'mvtk/confirm', component: PurchaseMvtkConfirmComponent },
+            { path: 'payment-method', component: PurchasePaymentMethodComponent },
+            { path: 'payment/cash', component: PurchaseCashPaymentComponent },
+            { path: 'payment/web-money', component: PurchaseWebMoneyPaymentComponent },
+            { path: 'payment/credit-card', component: PurchaseCreditCardPaymentComponent },
             // { path: 'point', canActivate: [MemberGuardService], component: PurchasePointComponent }
         ]
     },

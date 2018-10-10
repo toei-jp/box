@@ -1,6 +1,5 @@
 <div class="contents">
     <h1 class="page-ttl">券種選択</h1>
-    <p class="read">ご希望の券種を選択して「次へ」ボタンを押してください。</p>
 
     <div *ngIf="purchase.isUsedMvtk() && purchase.data.mvtkTickets.length === 0" class="box radius bg-ultra-light-gray mb-middle mvtk">
         <dl class="d-table">
@@ -70,9 +69,14 @@
         </p>-->
     </div>
     <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
-        <app-buttons nextLabel="次へ" prevLabel="戻る" prevLink="/purchase/seat"></app-buttons>
+        <div class="button-area">
+            <div class="button next-button blue-button">
+                <button type="submit">
+                    <app-icon iconName="next-white" width="15" height="15"></app-icon>次へ
+                </button>
+            </div>
+        </div>
     </form>
-    <app-site-seal></app-site-seal>
 </div>
 
 <app-modal [open]="ticketsModal" [layout]="false" (close)="ticketsModal = false">
@@ -144,3 +148,4 @@
 </app-modal>
 
 <app-loading [show]="isLoading"></app-loading>
+<app-navigation-button prevLink="/purchase/seat"></app-navigation-button>

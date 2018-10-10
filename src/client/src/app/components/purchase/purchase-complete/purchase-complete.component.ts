@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as factory from '@toei-jp/cinerino-factory';
+import { factory } from '@toei-jp/cinerino-api-javascript-client';
 import * as moment from 'moment';
 import { environment } from '../../../../environments/environment';
 // import { CinerinoService } from '../../../services/cinerino/cinerino.service';

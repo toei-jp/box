@@ -29,8 +29,8 @@ body {
     width: 100%;
     font-family: $font-family;
     font-size: 16px;
-    color: #333;
-    background-color: #E2E1E0;
+    color: #fff;
+    background-color: #271916;
     @media screen and (max-width: $tablet){
         font-weight: normal;
     }
@@ -548,16 +548,15 @@ p {
             }
         }
     }
-    &.blue-button {
+    &.yellow-button {
         a, button, label {
-            background-color: #019fe8;
+            background-color: #F6B300;
             color: #FFF;
-            box-shadow: 0 3px 0 #0084b2;
         }
     }
-    &.dark-blue-button {
+    &.dark-yellow-button {
         a, button, label {
-            background-color: #036db7;
+            background-color: #F6B300;
             color: #FFF;
         }
     }
@@ -601,17 +600,17 @@ p {
             }
         }
     }
-    &.blue-button {
+    &.yellow-button {
         a, button, label {
-            border-color: #019fe8;
-            color: #019fe8;
+            border-color: #F6B300;
+            color: #F6B300;
             background-color: #FFF;
         }
     }
-    &.dark-blue-button {
+    &.dark-yellow-button {
         a, button, label {
-            border-color: #036db7;
-            color: #036db7;
+            border-color: #F6B300;
+            color: #F6B300;
         }
     }
     &.gray-button {
@@ -742,14 +741,14 @@ p {
 .wrapper {
     width: 940px;
     margin: 0 auto;
-    padding: 30px 0;
+    // padding: 30px 0;
     @media screen and (max-width: $tablet){
         width: auto;
-        padding: 15px;
+        // padding: 15px;
     }
     @media screen and (max-width: $mobile){
         width: auto;
-        padding: 10px;
+        // padding: 10px;
     }
 }
 
@@ -817,7 +816,7 @@ p {
 
 
 .contents {
-    background-color: #FFF;
+    // background-color: #FFF;
     padding: 40px 120px 60px;
     @media screen and (max-width: $tablet){
         padding: 40px 60px 60px;

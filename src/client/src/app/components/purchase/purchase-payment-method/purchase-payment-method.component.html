@@ -1,0 +1,16 @@
+<div class="contents">
+    <app-cash-register [editable]="false"></app-cash-register>        
+    <h1 class="page-ttl">お支払い方法</h1>
+    <div class="payment-methods">
+        <a routerLink="/purchase/payment/cash" class="payment-button">
+            現金
+        </a>
+        <a routerLink="/purchase/payment/credit-card" class="payment-button">
+            クレジットカード
+        </a>
+        <a routerLink="/purchase/payment/web-money" class="payment-button">
+            電子マネー
+        </a>
+    </div>
+</div>
+<app-navigation-button prevLink="/purchase/ticket"></app-navigation-button>

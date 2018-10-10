@@ -83,11 +83,7 @@ function auth(req, res) {
                 };
                 log('findByOrderInquiryKey', args);
                 const orderService = new cinerino.service.Order(options);
-                const order = yield orderService.findByConfirmationNumber(args);
-                inquiryModel.order = yield orderService.authorizeOwnershipInfos({
-                    customer: args.customer,
-                    orderNumber: order.orderNumber
-                });
+                inquiryModel.order = yield orderService.findByConfirmationNumber(args);
                 log('findByOrderInquiryKey', inquiryModel.order);
                 if (inquiryModel.order === undefined) {
                     log('NOT FOUND');
@@ -195,3 +191,4 @@ function timeFormat(time) {
     const minutes = mm.format('mm');
     return `${hour}:${minutes}`;
 }
+//# sourceMappingURL=inquiry.controller.js.map

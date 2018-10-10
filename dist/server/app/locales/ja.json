@@ -16,25 +16,30 @@
 	"noscript": "javascrptの設定を有効にしてご覧ください",
 	"inquiry": {
 		"login": {
-			"pageTitle": "チケット情報照会",
-			"read": "下記にチケット購入時の予約番号と電話番号を入力して<br>「照会」ボタンを押してください。",
-			"next": "照会",
-			"prev": "劇場TOPへ戻る"
+			"pageTitle": "チケット発券",
+			"read": "チケット購入時の予約番号と電話番号を入力して<br>「照会する」ボタンを押してください。",
+			"next": "照会する",
+			"modal": {
+				"validation": {
+					"ttl": "入力内容に誤りがあります。"
+				}
+			}
 		},
 		"confirm": {
-			"pageTitle": "チケット情報確認",
-			"read": "入場に必要なQRコードの情報は下記になります。",
-			"next": "入場方法はこちら",
-			"prev": "戻る",
-			"ticketButton": "チケット情報まで移動",
-			"sectionTitle": "スムーズに入場するには？",
-			"sectionText": "このページをホーム画面やブックマーク、お気に入りに追加すると<br>当日に予約番号と電話番号を入力しなくてもQRコードが表示できて当日の入場もスムーズです。",
-			"sectionButton": "さらに詳しくはこちら",
-			"qrBefore": "鑑賞日前日からQRコードが表示されます。",
-			"qrAfter": "上映日から1ヶ月以上経過しています。",
-			"note": "※チケットの発行・照会等に必要な番号となりますので必ずお控えください。",
-			"qrTitle": "入場用QRコード",
-			"qrRead": "当日ご入場の際は、QRコードをスタッフに提示してご入場してください。"
+			"pageTitle": "チケット発券",
+			"read": "内容をご確認頂き問題なければ「チケットを印刷する」ボタンを押してください。<br>チケットの印刷が始まります。<br><span class=\"small-text\">※この先の操作の取り消しは出来ませんのでご注意ください。",
+			"next": "チケットを印刷する",
+			"before": "鑑賞日前日からチケットの発券ができます。",
+			"after": "チケット発券時間を過ぎています。<br>劇場窓口でお問い合わせください。"
+		},
+		"print": {
+			"pageTitle": "チケット発券",
+			"read": "只今<span class=\"ticket-length\"></span>枚のチケットを印刷中<br>印刷にお時間がかかる事がありますのでそのままお待ち下さい。"
+		},
+		"complete": {
+			"pageTitle": "チケット発券",
+			"read": "印刷が完了しました。<br>チケットを受け取ってご入場ください。<br>ご利用ありがとうございました。",
+			"next": "終了"
 		}
 	},
 	"method": {
@@ -74,7 +79,15 @@
 			"gmo": "お手続きの途中でエラーが発生いたしました。<br>再度ご入力ください。"
 		}
 	},
+	"setting": {
+		"pageTtl": "設定",
+		"read": "端末の情報を設定してください",
+		"next": "設定",
+		"certificate": "上記IPアドレスの証明書は<a class=\"certificate\" href=\"#\" download=\"\">こちら</a>",
+		"print": "テスト印刷"
+    },
 	"common": {
+		"printer": "プリンター",
 		"ticketNumber": "枚",
 		"recommend": "おすすめ",
 		"price": "円",
@@ -85,6 +98,7 @@
 		"totalFee": "合計金額",
 		"theater": "劇場",
 		"theaterCode": "劇場コード",
+		"deviceId": "端末ID",
 		"screen": "スクリーン",
 		"appreciationDate": "鑑賞日時",
 		"ticketCode": "発券コード",
@@ -131,6 +145,8 @@
 		"notesAgree": "上記内容に同意する",
 		"siteSeal": "この画面は、高いセキュリティでプライバシーを保護する為に、ssl暗号化通信を採用しています。",
 		"placeholder": {
+			"printer": "(例)0.0.0.0",
+			"deviceId": "(例)cinema",
 			"lastNameKanji": "(例)しねま",
 			"firstNameKanji": "(例)たろう",
 			"lastNameHira": "(例)しねま",

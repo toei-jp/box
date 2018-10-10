@@ -1,0 +1,65 @@
+<h1 class="page-ttl">購入内容確認</h1>
+<p class="read">この先に操作の取り消しは出来ませんのでご注意ください。</p>
+<div class="form-layout">
+    <div class="box order-info mb-large">
+        <dl>
+            <dt>作品名</dt>
+            <dd>{{ purchase.getTitle() }}</dd>
+        </dl>
+        <dl>
+            <dt>鑑賞日時</dt>
+            <dd>{{ purchase.getAppreciationDate() }}</dd>
+        </dl>
+        <dl>
+            <dt>座席</dt>
+            <dd>
+                <p *ngFor="let offer of purchase.data.offers">
+                    {{ offer.seatNumber }} {{ offer.ticketInfo.ticketName.ja }} ￥{{ offer.ticketInfo.charge }}
+                </p>
+            </dd>
+        </dl>
+        <dl>
+            <dt>お支払い方法</dt>
+            <dd>
+                {{ paymentMethod }}
+            </dd>
+        </dl>
+    </div>
+    <div class="charge mb-large">
+        <dl>
+            <dt>合計</dt>
+            <dd>￥ {{ purchase.getTotalPrice().toLocaleString('ja-JP') }}</dd>
+        </dl>
+        <ng-container *ngIf="numpad">
+            <dl>
+                <dt>お預かり</dt>
+                <dd class="cashing" [ngClass]="{ inputing: !hideNumpad }">
+                    <app-numpad [hide]="hideNumpad" [keyPress]="handleKeyPress"></app-numpad>
+                    <span (click)="hideNumpad = !hideNumpad">
+                        ￥ {{ purchase.data.cash?.receive.toLocaleString('ja-JP') }}
+                    </span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>お釣り</dt>
+                <dd>￥ {{ purchase.data.cash?.return.toLocaleString('ja-JP') }}</dd>
+            </dl>
+        </ng-container>
+    </div>
+
+    <h2 class="section-ttl">注意事項(重要)</h2>
+
+    <app-purchase-note class="mb-middle" [theaterCode]="purchase.data.screeningEvent?.superEvent.location.branchCode.slice(-2)"></app-purchase-note>
+
+    <form [formGroup]="confirmForm" (ngSubmit)="onSubmit(confirmForm.controls['notes'].invalid)">
+        <div class="mb-x-large text-center">
+            <input type="checkbox" formControlName="notes" id="notes">
+            <label for="notes">
+                <strong>最後確認チェックに同意する</strong>
+            </label>
+            <div *ngIf="confirmForm.controls['notes'].invalid && (confirmForm.controls['notes'].dirty || confirmForm.controls['notes'].touched)"
+                class="validation-text">最後確認チェックに同意してください</div>
+        </div>
+        <app-next-button [disabled]="confirmForm.controls['notes'].invalid">次へ</app-next-button>
+    </form>
+</div>

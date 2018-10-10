@@ -1,0 +1,8 @@
+<div class="contents">
+    <app-cash-register [editable]="false"></app-cash-register>
+    <app-purchase-payment [purchase]="purchase" paymentMethod="現金" [onSubmit]="submitHandle">
+    </app-purchase-payment>
+</div>
+
+<app-loading [show]="isLoading"></app-loading>
+<app-navigation-button prevLink="/purchase/payment-method"></app-navigation-button>

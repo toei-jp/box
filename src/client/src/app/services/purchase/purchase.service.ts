@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import * as mvtkReserve from '@motionpicture/mvtk-reserve-service';
-import * as factory from '@toei-jp/cinerino-factory';
+import { factory } from '@toei-jp/cinerino-api-javascript-client';
 import * as moment from 'moment';
 // import { ISeat } from '../../components/parts/screen/screen.component';
 import { environment } from '../../../environments/environment';
 import { TimeFormatPipe } from '../../pipes/time-format/time-format.pipe';
-import { AwsCognitoService } from '../aws-cognito/aws-cognito.service';
-import { CallNativeService } from '../call-native/call-native.service';
+// import { AwsCognitoService } from '../aws-cognito/aws-cognito.service';
+// import { CallNativeService } from '../call-native/call-native.service';
 import { CinerinoService } from '../cinerino/cinerino.service';
-import { SaveType, StorageService } from '../storage/storage.service';
-import { UserService } from '../user/user.service';
+import { IConfig, SaveType, StorageService } from '../storage/storage.service';
+// import { UserService } from '../user/user.service';
 
 declare const ga: Function;
 
 export type IScreeningEvent = factory.chevre.event.screeningEvent.IEvent;
 export type ICustomerContact = factory.transaction.placeOrder.ICustomerContact;
 export type ISalesTicketResult = factory.chevre.ticketType.ITicketType;
-type IUnauthorizedCardOfMember = factory.paymentMethod.paymentCard.creditCard.IUnauthorizedCardOfMember;
-type IUncheckedCardTokenized = factory.paymentMethod.paymentCard.creditCard.IUncheckedCardTokenized;
+export import BoxPaymentMethod = factory.boxPaymentMethodType;
+// type IUnauthorizedCardOfMember = factory.paymentMethod.paymentCard.creditCard.IUnauthorizedCardOfMember;
+// type IUncheckedCardTokenized = factory.paymentMethod.paymentCard.creditCard.IUncheckedCardTokenized;
 
 export interface IOffer {
     price: number;
@@ -96,7 +97,7 @@ interface IData {
     /**
      * 支払いクレジットカード
      */
-    paymentCreditCard?: IUnauthorizedCardOfMember | IUncheckedCardTokenized;
+    // paymentCreditCard?: IUnauthorizedCardOfMember | IUncheckedCardTokenized;
     /**
      * クレジットカードエラー
      */
@@ -104,7 +105,7 @@ interface IData {
     /**
      * 決済情報（クレジット）
      */
-    creditCardAuthorization?: {
+    boxAuthorization?: {
         id: string;
     };
     /**
@@ -135,6 +136,10 @@ interface IData {
      * ポイント券種情報
      */
     // pointTickets: factory.chevre.services.master.ITicketResult[];
+    /**
+     * お支払い=現金の場合
+     */
+    cash?: { receive: number; return: number };
 }
 
 export interface IGmoTokenObject {
@@ -169,9 +174,9 @@ export class PurchaseService {
     constructor(
         private storage: StorageService,
         private cinerino: CinerinoService,
-        private awsCognito: AwsCognitoService,
-        private callNative: CallNativeService,
-        private user: UserService
+        // private awsCognito: AwsCognitoService,
+        // private callNative: CallNativeService,
+        // private user: UserService
     ) {
         this.load();
     }
@@ -408,7 +413,7 @@ export class PurchaseService {
             return false;
         }
 
-        return this.data.screeningEvent.superEvent.mvtkFlg === '1' &&
+        return this.data.screeningEvent.superEvent.mvtkFlg === 1 &&
             this.data.screeningEvent.mvtkExcludeFlg !== '1';
     }
 
@@ -658,14 +663,23 @@ export class PurchaseService {
         }
         await this.cinerino.getServices();
         // 予約中なら座席削除
-        if (this.data.reservationAuthorizationArgs !== undefined) {
+        // if (this.data.reservationAuthorizationArgs !== undefined) {
+        //     const cancelSeatReservationArgs = {
+        //         transactionId: this.data.transaction.id,
+        //         // actionId: this.data.tmpSeatReservationAuthorization.id
+        //     };
+        //     await this.cinerino.transaction.placeOrder.cancel(cancelSeatReservationArgs);
+        //     this.data.reservationAuthorizationArgs = undefined;
+        //     this.save();
+        // }
+
+        if (this.data.seatReservationAuthorization !== undefined) {
+            // 予約中なら座席削除
             const cancelSeatReservationArgs = {
                 transactionId: this.data.transaction.id,
-                // actionId: this.data.tmpSeatReservationAuthorization.id
+                actionId: this.data.seatReservationAuthorization.id
             };
-            await this.cinerino.transaction.placeOrder.cancel(cancelSeatReservationArgs);
-            this.data.reservationAuthorizationArgs = undefined;
-            this.save();
+            await this.cinerino.transaction.placeOrder.voidSeatReservation(cancelSeatReservationArgs);
         }
 
         const tickets = offers.map((o) => ({
@@ -721,6 +735,25 @@ export class PurchaseService {
             throw new Error('status is different');
         }
         await this.cinerino.getServices();
+
+        if (this.data.seatReservationAuthorization !== undefined) {
+            // 予約中なら座席削除
+            const voidArgs = {
+                transactionId: this.data.transaction.id,
+                actionId: this.data.seatReservationAuthorization.id
+            };
+            await this.cinerino.transaction.placeOrder.voidSeatReservation(voidArgs);
+        }
+
+        if (this.data.boxAuthorization !== undefined) {
+            // クレジットカード登録済みなら削除
+            await this.cinerino.transaction.placeOrder.voidBoxPayment({
+                transactionId: this.data.transaction.id,
+                actionId: this.data.boxAuthorization.id
+            });
+            this.data.boxAuthorization = undefined;
+            this.save();
+        }
         // const changeSeatReservationArgs = {
         //     transactionId: this.data.transaction.id,
         //     actionId: this.data.tmpSeatReservationAuthorization.id,
@@ -744,16 +777,6 @@ export class PurchaseService {
         if (this.data.seatReservationAuthorization === undefined) {
             throw new Error('status is different');
         }
-        if (this.data.creditCardAuthorization !== undefined) {
-            // クレジットカード登録済みなら削除
-            const cancelCreditCardAuthorizationArgs = {
-                transactionId: this.data.transaction.id,
-                actionId: this.data.creditCardAuthorization.id
-            };
-            await this.cinerino.transaction.placeOrder.voidCreditCardPayment(cancelCreditCardAuthorizationArgs);
-            this.data.creditCardAuthorization = undefined;
-            this.save();
-        }
         this.save();
     }
 
@@ -761,17 +784,27 @@ export class PurchaseService {
      * 購入者情報登録処理
      * @method customerContactRegistrationProcess
      */
-    public async customerContactRegistrationProcess(args: factory.transaction.placeOrder.ICustomerContact) {
+    public async customerContactRegistrationProcess() {
         if (this.data.transaction === undefined) {
             throw new Error('transaction is undefined');
         }
+        if (this.data.movieTheaterOrganization === undefined) {
+            throw new Error('movieTheaterOrganization is undefined');
+        }
         await this.cinerino.getServices();
+        const config: IConfig = this.storage.load('config', SaveType.Local);
+        const args = {
+            givenName: this.data.movieTheaterOrganization.name.ja,
+            familyName: config.cashRegister,
+            email: config.email,
+            telephone: this.data.movieTheaterOrganization.telephone
+        };
         // 入力情報を登録
         this.data.customerContact = await this.cinerino.transaction.placeOrder.setCustomerContact({
             transactionId: this.data.transaction.id,
             contact: args
         });
-        if (this.user.isNative() /*&& !this.user.isMember()*/) {
+        /* if (this.user.isNative() && !this.user.isMember()) {
             try {
                 const updateRecordsArgs = {
                     datasetName: 'profile',
@@ -786,7 +819,7 @@ export class PurchaseService {
             } catch (err) {
                 console.error(err);
             }
-        }
+        } */
 
         this.save();
     }
@@ -794,7 +827,7 @@ export class PurchaseService {
     /**
      * クレジットカード支払い処理
      */
-    public async creditCardPaymentProcess() {
+    /* public async creditCardPaymentProcess() {
         if (this.data.transaction === undefined
             || this.data.paymentCreditCard === undefined) {
             throw new Error('status is different');
@@ -822,13 +855,51 @@ export class PurchaseService {
         this.data.creditCardAuthorization =
             await this.cinerino.transaction.placeOrder.authorizeCreditCardPayment(createCreditCardAuthorizationArgs);
         this.save();
+    } */
+
+    /**
+     * クレジットカード支払い処理
+     */
+    public async boxPaymentProcess(paymentMethod: BoxPaymentMethod) {
+        if (this.data.transaction === undefined) {
+            throw new Error('status is different');
+        }
+        await this.cinerino.getServices();
+        if (this.data.boxAuthorization !== undefined) {
+            // クレジットカード登録済みなら削除
+            await this.cinerino.transaction.placeOrder.voidBoxPayment({
+                transactionId: this.data.transaction.id,
+                actionId: this.data.boxAuthorization.id
+            });
+            this.data.boxAuthorization = undefined;
+            this.save();
+        }
+        let cash: { received: number; returned: number } | undefined;
+        if (
+            paymentMethod === factory.boxPaymentMethodType.Cash
+            && this.data.cash !== undefined
+        ) {
+            cash = {
+                received: this.data.cash.receive,
+                returned: this.data.cash.return
+            };
+        }
+        const args = {
+            transactionId: this.data.transaction.id,
+            amount: this.getTotalPrice(),
+            paymentMethod,
+            cash
+        };
+        this.data.boxAuthorization =
+            await this.cinerino.transaction.placeOrder.authorizeBoxPayment(args);
+        this.save();
     }
 
     /**
      * オーダーID生成
      * @method createOrderId
      */
-    private createOrderId() {
+    /* private createOrderId() {
         if (this.data.seatReservationAuthorization === undefined
             || this.data.seatReservationAuthorization.result === undefined
             || this.data.screeningEvent === undefined) {
@@ -846,7 +917,7 @@ export class PurchaseService {
         this.data.orderCount += 1;
         // オーダーID 予約日 + 劇場ID(3桁) + 予約番号(8桁) + オーソリカウント(2桁)
         return `${reserveDate}${theaterCode}${tmpReserveNum}${orderCount}`;
-    }
+    } */
 
     /**
      * インセンティブ処理
@@ -971,7 +1042,7 @@ export class PurchaseService {
             console.error(err);
         }
 
-        if (this.user.isNative()/* && !this.user.isMember()*/) {
+        /* if (this.user.isNative() && !this.user.isMember()) {
             // アプリ非会員ならCognitoへ登録
             try {
                 const reservationRecord = await this.awsCognito.getRecords({
@@ -1000,9 +1071,9 @@ export class PurchaseService {
             } catch (err) {
                 console.error('awsCognito: updateRecords', err);
             }
-        }
+        } */
         // プッシュ通知登録
-        try {
+        /* try {
             const itemOffered = order.acceptedOffers[0].itemOffered;
             if (itemOffered.typeOf !== factory.chevre.reservationType.EventReservation) {
                 throw new Error('itemOffered.typeOf is not EventReservation');
@@ -1022,7 +1093,7 @@ export class PurchaseService {
             this.callNative.localNotification(localNotificationArgs);
         } catch (err) {
             console.error(err);
-        }
+        } */
 
         // 購入情報削除
         this.reset();

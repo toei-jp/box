@@ -72,11 +72,7 @@ export async function auth(req: Request, res: Response): Promise<void> {
             };
             log('findByOrderInquiryKey', args);
             const orderService = new cinerino.service.Order(options);
-            const order = await orderService.findByConfirmationNumber(args);
-            inquiryModel.order = await orderService.authorizeOwnershipInfos({
-                customer: args.customer,
-                orderNumber: order.orderNumber
-            });
+            inquiryModel.order = await orderService.findByConfirmationNumber(args);
             log('findByOrderInquiryKey', inquiryModel.order);
             if (inquiryModel.order === undefined) {
                 log('NOT FOUND');
