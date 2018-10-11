@@ -127,7 +127,7 @@ function heightFix() {
 function loadingStart(cb) {
     $('.loading-cover').addClass('active');
     $('.loading').addClass('active');
-    $('.wrapper').addClass('blur');
+    $('.wrapper, .navigation-btn').addClass('blur');
     setTimeout(function () {
         if (cb) cb();
     }, 1000);
@@ -141,7 +141,7 @@ function loadingStart(cb) {
 function loadingEnd() {
     $('.loading-cover').removeClass('active');
     $('.loading').removeClass('active');
-    $('.wrapper').removeClass('blur');
+    $('.wrapper, .navigation-btn').removeClass('blur');
 }
 
 /**

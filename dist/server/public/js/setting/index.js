@@ -11,7 +11,7 @@ $(function () {
         }
         loadingStart(function () {
             saveConfig();
-            loadingEnd();
+            location.href = '/';
         });
     });
     $(document).on('click', '.certificate', function (event) {

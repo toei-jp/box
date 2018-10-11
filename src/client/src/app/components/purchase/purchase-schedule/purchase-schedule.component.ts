@@ -59,7 +59,8 @@ export class PurchaseScheduleComponent implements OnInit {
         try {
             this.config = this.storage.load('config', SaveType.Local);
             if (this.config === null) {
-                throw new Error('設定が保存していません。');
+                location.href = '/setting';
+                return;
             }
             await this.cinerino.getServices();
             this.theater = (await this.cinerino.organization.findMovieTheaterByBranchCode({branchCode: this.config.theater})).data[0];
